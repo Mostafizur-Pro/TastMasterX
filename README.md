@@ -1,3 +1,10 @@
+<!-- https://trello.com/
+https://marketplace.atlassian.com/apps/4984/git-integration-for-jira-github-gitlab-and-more?hosting=cloud&tab=privacy-and-security
+
+https://asana.com/
+
+https://clickup.com/ -->
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
