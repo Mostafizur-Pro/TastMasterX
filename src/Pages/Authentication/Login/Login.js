@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import login from "../../../assete/LoginSignin/login.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../contexts/AuthProvider";
 
 function LoginPage() {
   const [loginError, setLoginError] = useState("");
+  const { signIn, createGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const {
     register,
     formState: { errors },
@@ -12,11 +18,23 @@ function LoginPage() {
   } = useForm();
 
   const handleLogin = (data) => {
-    console.log(data);
+    // console.log(data);
+
+    signIn(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        // setLoginUserEmail(user.email);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        setLoginError(error.message);
+      });
   };
 
   const handleGoogleSignIn = (event) => {
     console.log(event);
+    event.preventDefault();
+    createGoogle();
   };
 
   return (
