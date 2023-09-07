@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signin from "../../../assete/LoginSignin/signin.png";
+import useTitle from "../../../hooks/useTitle";
+import { AuthContext } from "../../../contexts/AuthProvider";
 
 function SignUp() {
+  useTitle("SignUp");
+  // const { createUser, updateUser } = useContext(AuthContext);
+  const { createUser, updateUser } = useContext(AuthContext);
   const imageHostKey = "8f9db19b3f39c00f02b131902d75b8e3";
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -13,7 +20,21 @@ function SignUp() {
 
   const handleSignUp = (data) => {
     createImage(data);
-    console.log(data);
+    // console.log(data);
+    if (data.email && data.password) {
+      createUser(data.email, data.password)
+        .then((result) => {
+          const user = result.user;
+          // console.log(user);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      navigate("/");
+    } else {
+      console.error("Error signing in");
+    }
   };
 
   const createImage = (data) => {
@@ -40,11 +61,17 @@ function SignUp() {
             photoURL: imgData.data.url,
           };
 
-          // updateUserProfile(userInfofirebase);
+          updateUserProfile(userInfofirebase);
 
           // saveUser(userInfo);
         }
       });
+  };
+
+  const updateUserProfile = (userInfofirebase) => {
+    updateUser(userInfofirebase)
+      .then(() => {})
+      .catch((err) => console.log(err));
   };
 
   return (
